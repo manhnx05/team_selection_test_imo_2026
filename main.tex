@@ -1,0 +1,190 @@
+\documentclass[12pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{vietnam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{xcolor}
+
+% Page setup
+\geometry{margin=2.5cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% Theorem environments
+\newtheorem{theorem}{Định lý}
+\newtheorem{lemma}{Bổ đề}
+\theoremstyle{definition}
+\newtheorem{definition}{Định nghĩa}
+
+\title{Bài toán Đường bay Trực tiếp}
+\author{}
+\date{}
+
+\begin{document}
+
+\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=\textbf{Câu 2 - Đề thi TST chọn đổi tuyển IMO 2026}]
+Cho $n$ nguyên dương và trong một quốc gia, có $8n+3$ sân bay. Với hai sân bay thì giữa chúng sẽ có đường bay trực tiếp hoặc không. Biết rằng nếu giữa hai sân bay mà không có đường bay trực tiếp thì số lượng đường bay trực tiếp của hai sân bay đó sẽ chênh lệch nhau đúng bằng $2$. Xác định số đường bay trực tiếp ít nhất.
+\end{tcolorbox}
+
+\begin{center}
+	\textbf{Lời giải}
+\end{center}
+
+\textbf{Mô hình hóa bài toán bằng Lý thuyết đồ thị} \\
+Gọi $G = (V, E)$ là đồ thị đơn vô hướng, trong đó tập đỉnh $V$ đại diện cho các sân bay và tập cạnh $E$ đại diện cho các đường bay trực tiếp giữa chúng.
+
+Theo giả thiết, số đỉnh của đồ thị là:
+\[
+|V| = 8n + 3
+\]
+
+Gọi $d_G(v)$ là bậc của đỉnh $v$ trong đồ thị $G$ (tương ứng với số đường bay trực tiếp từ sân bay $v$).
+
+Điều kiện của bài toán được phát biểu lại như sau: Với mọi cặp đỉnh $u, v \in V$, nếu $u$ và $v$ không kề nhau (tức là $uv \notin E$), thì:
+\[
+|d_G(u) - d_G(v)| = 2
+\]
+
+Bài toán yêu cầu tìm số lượng đường bay trực tiếp ít nhất, tức là tìm giá trị nhỏ nhất của số cạnh $|E(G)|$.
+
+\textbf{Chuyển đổi sang đồ thị bù}
+
+Xét đồ thị bù của $G$, kí hiệu là $H = \bar{G} = (V, E_H)$.
+
+Trong đồ thị bù $H$, hai đỉnh kề nhau khi và chỉ khi chúng không kề nhau trong $G$. Số cạnh của $G$ và $H$ liên hệ với nhau qua hệ thức:
+\[
+|E(G)| + |E(H)| = \frac{(8n+3)(8n+2)}{2} = 32n^2 + 20n + 3
+\]
+
+Do đó, để cực tiểu hóa $|E(G)|$, ta cần cực đại hóa $|E(H)|$.
+
+Bậc của một đỉnh $v$ trong $H$ là $d_H(v) = |V| - 1 - d_G(v) = 8n + 2 - d_G(v)$.
+
+Suy ra, hiệu bậc của hai đỉnh trong $H$ và $G$ có cùng giá trị tuyệt đối:
+\[
+|d_H(u) - d_H(v)| = |d_G(v) - d_G(u)| = 2
+\]
+
+Vậy bài toán trở thành: Tìm số cạnh lớn nhất của đồ thị $H$ có $8n+3$ đỉnh, sao cho với mọi cạnh $uv \in E_H$, ta luôn có $|d_H(u) - d_H(v)| = 2$.
+
+\textbf{Chứng minh đồ thị $H$ là đồ thị hai phía}
+
+Xét một chu trình bất kỳ trong $H$: $v_1, v_2, \dots, v_k, v_1$.
+
+Dọc theo các cạnh của chu trình, hiệu bậc giữa hai đỉnh kề nhau luôn là $\pm 2$. Do xuất phát từ $v_1$ và quay trở về $v_1$, tổng các mức thay đổi bậc phải bằng $0$:
+\[
+\sum_{i=1}^{k} (d_H(v_{i+1}) - d_H(v_i)) = 0 \quad \text{(với } v_{k+1} = v_1\text{)}
+\]
+
+Vì mỗi số hạng trong tổng là $\pm 2$ nên để tổng bằng $0$, số lượng số hạng mang dấu dương phải bằng số lượng số hạng mang dấu âm. Do đó, tổng số các số hạng (chiều dài chu trình $k$) phải là một số chẵn.
+
+Vì $H$ không chứa chu trình độ dài lẻ, nên $H$ là đồ thị hai phía.
+
+\textbf{Đánh giá số cạnh lớn nhất của $H$}
+
+Giả sử $H$ có phân hoạch đỉnh thành hai tập độc lập $A$ và $B$. Gọi $a = |A|$ và $b = |B|$.
+
+Ta có:
+\[
+a + b \le 8n + 3
+\]
+
+Không mất tính tổng quát, giả sử $a \le b$. Do tổng $a+b \le 8n+3$, ta suy ra:
+\[
+a \le \left\lfloor \frac{8n+3}{2} \right\rfloor = 4n + 1
+\]
+
+Gọi $M = \max_{v \in B} \{d_H(v)\}$ là bậc lớn nhất của các đỉnh thuộc tập $B$. Vì mọi đỉnh trong $B$ chỉ nối với các đỉnh trong $A$, nên ta luôn có $M \le a$.
+
+Số cạnh của $H$, kí hiệu là $E_H$, bị chặn bởi hai bất đẳng thức sau:
+\[
+E_H = \sum_{v \in B} d_H(v) \le b \cdot M
+\]
+
+Xét đỉnh $v \in B$ có bậc $M$. Đỉnh $v$ kề với $M$ đỉnh trong $A$. Với mỗi đỉnh $u \in A$ kề với $v$, do $|d_H(u) - d_H(v)| = 2$ nên $d_H(u) \le M + 2$. Các đỉnh còn lại trong $A$ (có số lượng $a - M$) có bậc tối đa bằng $b$. Do đó:
+\[
+E_H = \sum_{u \in A} d_H(u) \le M(M+2) + (a-M)b
+\]
+
+Ta sẽ xét các trường hợp của $a$ (với điêu kiện $a \le 4n+1$):
+
+\textbf{TH1: $a = 4n+1$}
+
+Khi đó $b \le 8n+3 - (4n+1) = 4n+2$. Ta có $M \le a = 4n+1$.
+
+\textbf{Nếu $M = 4n+1$:} Đỉnh $v \in B$ kề với tất cả các đỉnh trong $A$. Bậc của các đỉnh $u \in A$ phải là $M-2$ hoặc $M+2$. Tuy nhiên $M+2 = 4n+3 > b = 4n+2$ (vô lý vì bậc tối đa trong $A$ không vượt quá $b$). Do đó, mọi đỉnh $u \in A$ kề với $v$ đều phải có bậc $M-2 = 4n-1$.
+
+Suy ra:
+\[
+E_H = a(4n-1) = (4n+1)(4n-1) = 16n^2 - 1 < 16n^2 + 8n
+\]
+
+\textbf{Nếu $M \le 4n$:} Áp dụng bất đẳng thức 1, ta có:
+\[
+E_H \le b \cdot M \le (4n+2)(4n) = 16n^2 + 8n
+\]
+
+\textbf{TH2: $a = 4n$}
+
+Khi đó $b \le 4n+3$. Ta có $M \le 4n$.
+
+\textbf{Nếu $M = 4n$:} Áp dụng bất đẳng thức 2, ta có:
+\[
+E_H \le M(M+2) + (a-M)b = 4n(4n+2) + 0 = 16n^2 + 8n
+\]
+
+\textbf{Nếu $M \le 4n-1$:} Áp dụng bất đẳng thức 1, ta có:
+\[
+E_H \le b \cdot M \le (4n+3)(4n-1) = 16n^2 + 8n - 3 < 16n^2 + 8n
+\]
+
+\textbf{TH3: $a \le 4n-1$}
+
+Lúc này $M \le a \le 4n-1$. Áp dụng bất đẳng thức 2, vì hàm $f(M) = M(M+2) + (a-M)b$ là hàm bậc hai hệ số âm theo $M$ (với $M \le a \le b-2$), hàm này đạt GTLN tại $M = a$. Do đó:
+\[
+E_H \le a(a+2) \le (4n-1)(4n+1) = 16n^2 - 1 < 16n^2 + 8n
+\]
+
+Từ tất cả các trường hợp trên, ta chứng minh được một cách chặt chẽ rằng số cạnh lớn nhất của $H$ là:
+\[
+\max |E(H)| = 16n^2 + 8n
+\]
+
+\textbf{Đồ thị thỏa mãn}
+
+Ta xây dựng đồ thị bù $H$ như sau:
+\begin{itemize}
+    \item[$+$] Tập $A$ có $4n$ đỉnh, mỗi đỉnh có bậc $4n+2$.
+    \item[$+$] Tập $B$ có $4n+2$ đỉnh, mỗi đỉnh có bậc $4n$.
+    \item[$+$] Có $1$ đỉnh cô lập (không nối với đỉnh nào, bậc $0$).
+\end{itemize}
+
+Tổng số đỉnh là $4n + (4n+2) + 1 = 8n + 3 = |V|$.
+
+$H$ chứa một thành phần liên thông là đồ thị hai phía đầy đủ $K_{4n, 4n+2}$.
+
+Số cạnh của $H$ là $E_H = 4n(4n+2) = 16n^2 + 8n$.
+
+Mọi cạnh $uv \in E_H$ đều nối 1 đỉnh bậc $4n+2$ và 1 đỉnh bậc $4n$, hiệu số bậc là đúng bằng $2$ (thỏa mãn điều kiện). Đỉnh cô lập không có cạnh trong $H$ nên không vi phạm điều kiện bài toán.
+
+\textbf{Kết luận}
+
+Số lượng đường bay trực tiếp (số cạnh của đồ thị $G$) ít nhất là:
+\[
+|E(G)|_{\min} = \frac{(8n+3)(8n+2)}{2} - \max |E(H)|
+\]
+\[
+|E(G)|_{\min} = (32n^2 + 20n + 3) - (16n^2 + 8n) = 16n^2 + 12n + 3
+\]
+
+Vậy số đường bay trực tiếp ít nhất của quốc gia đó là:
+\[
+\boxed{16n^2 + 12n + 3}
+\]
+
+\end{document}
